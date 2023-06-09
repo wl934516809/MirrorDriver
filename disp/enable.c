@@ -12,7 +12,6 @@
 * Copyright (c) 1992-1998 Microsoft Corporation
 \**************************************************************************/
 #define DBG 1
-
 #include "driver.h"
 
 // The driver function table with all function index/address pairs
@@ -46,11 +45,8 @@ static DRVFN gadrvfn[] =
 // Define the functions you want to hook for 8/16/24/32 pel formats
 
 #define HOOKS_BMF8BPP 0
-
 #define HOOKS_BMF16BPP 0
-
 #define HOOKS_BMF24BPP 0
-
 #define HOOKS_BMF32BPP 0
 
 /******************************Public*Routine******************************\
@@ -130,9 +126,7 @@ DrvEnablePDEV(
     UNREFERENCED_PARAMETER(pwszDeviceName);
 
     // Allocate a physical device structure.
-
     ppdev = (PPDEV) EngAllocMem(FL_ZERO_MEMORY, sizeof(PDEV), ALLOC_TAG);
-
     if (ppdev == (PPDEV) NULL)
     {
         RIP("DISP DrvEnablePDEV failed EngAllocMem\n");
@@ -211,11 +205,8 @@ DHPDEV dhpdev)
    DISPDBG((1,"DrvDisablePDEV:\n"));
 
    EngDeletePalette(ppdev->hpalDefault);
-
    EngFreeMem(dhpdev);
-
    EngUnmapFile(ppdev->pMappedFile);
-   
    EngDeleteFile(L"\\??\\c:\\video.dat");
 }
 
@@ -276,16 +267,8 @@ DHPDEV dhpdev)
 
     
     mirrorsize = (ULONG)(ppdev->cxScreen * ppdev->cyScreen * BitsPerPel);
-
-    ppdev->pvTmpBuffer = EngMapFile(L"\\??\\c:\\video.dat", 
-                    mirrorsize,
-                    &ppdev->pMappedFile);
-
-    hsurf = (HSURF) EngCreateBitmap(sizl,
-                                        ppdev->lDeltaScreen,
-                                        ulBitmapType,
-                                        0,
-                                        (PVOID)(ppdev->pvTmpBuffer));
+    ppdev->pvTmpBuffer = EngMapFile(L"\\??\\c:\\video.dat", mirrorsize,&ppdev->pMappedFile);
+    hsurf = (HSURF) EngCreateBitmap(sizl,ppdev->lDeltaScreen,ulBitmapType,0,(PVOID)(ppdev->pvTmpBuffer));
     if (hsurf == (HSURF) 0)
     {
         RIP("DISP DrvEnableSurface failed EngCreateBitmap\n");
